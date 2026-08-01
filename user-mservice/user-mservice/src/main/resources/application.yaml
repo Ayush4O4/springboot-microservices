@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: user-mservice
+  datasource:
+    url: jdbc:h2:file:./data/usersdb
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+
+jwt:
+  secret: setting-this-secret-key-to-secure-my-microservices-which-run-on-localhost-funny
+
+

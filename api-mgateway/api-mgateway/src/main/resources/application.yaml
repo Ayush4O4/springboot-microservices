@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: api-mgateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: product-service
+              uri: lb://PRODUCT-MSERVICE
+              predicates:
+                - Path=/products/**
+
+            - id: order-service
+              uri: lb://ORDER-MSERVICE
+              predicates:
+                - Path=/order/**
+
+            - id: user-service
+              uri: lb://USER-MSERVICE
+              predicates:
+                - Path=/user/**
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+
+jwt:
+  secret: setting-this-secret-key-to-secure-my-microservices-which-run-on-localhost-funny
